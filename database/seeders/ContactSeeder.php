@@ -13,7 +13,7 @@ class ContactSeeder extends Seeder
             [
                 'name' => 'Rahul Sharma',
                 'email' => 'rahul.sharma@techcorp.in',
-                'phone' => '+91 98765 43210',
+                'phone' => '+91 63525 24266',
                 'service' => 'Website Development',
                 'message' => 'We need a high-performance corporate platform with custom CMS and Next.js frontend.',
                 'status' => 'new',
