@@ -15,10 +15,11 @@ Run the batch launcher from the root or inside `backend/`:
 # Or directly in terminal:
 cd backend
 $env:Path = "C:\xampp\php;$env:Path"
-php artisan serve --port=8000
+php artisan serve --port=8080
 ```
-- **Web Admin Dashboard & API Explorer:** `http://localhost:8000`
-- **REST API Base URL:** `http://localhost:8000/api`
+- **Web Admin Dashboard & API Explorer:** `http://localhost:8080/dashboard`
+- **Filament Admin Panel:** `http://localhost:8080/admin`
+- **REST API Base URL:** `http://localhost:8080/api`
 
 ---
 

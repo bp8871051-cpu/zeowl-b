@@ -16,46 +16,78 @@ class TestimonialForm
     {
         return $schema
             ->components([
-                Section::make('Client Testimonial')
+                Section::make('Client Information')
+                    ->description('Client details, designation and business credentials')
                     ->schema([
-                        Grid::make(3)->schema([
+                        Grid::make([
+                            'default' => 1,
+                            'sm' => 2,
+                            'lg' => 3,
+                        ])->schema([
                             TextInput::make('client_name')
                                 ->label('Client Name')
+                                ->placeholder('e.g. Alexander Hayes')
                                 ->required()
                                 ->maxLength(120),
-                            TextInput::make('role')
+                            TextInput::make('client_role')
                                 ->label('Role / Title')
-                                ->placeholder('Founder & CEO')
+                                ->placeholder('e.g. CTO or Founder')
                                 ->maxLength(100),
                             TextInput::make('company')
                                 ->label('Company / Business')
+                                ->placeholder('e.g. FinVibe Technologies')
                                 ->maxLength(120),
                         ]),
-                        Textarea::make('quote')
-                            ->label('Client Feedback / Quote')
+                        TextInput::make('project_name')
+                            ->label('Project / Engagement Name')
+                            ->placeholder('e.g. FinVibe SaaS Platform')
+                            ->maxLength(150),
+                    ]),
+
+                Section::make('Testimonial Content & Display')
+                    ->description('Authentic feedback quote, rating and visibility')
+                    ->schema([
+                        Textarea::make('content')
+                            ->label('Client Feedback / Review Quote')
+                            ->placeholder('Enter the client testimonial text here...')
                             ->required()
-                            ->rows(4)
+                            ->rows(5)
                             ->columnSpanFull(),
-                        Grid::make(3)->schema([
+                        Grid::make([
+                            'default' => 1,
+                            'sm' => 3,
+                        ])->schema([
                             TextInput::make('rating')
-                                ->label('Rating (1-5)')
+                                ->label('Rating (1-5 Stars)')
                                 ->numeric()
-                                ->default(5),
+                                ->minValue(1)
+                                ->maxValue(5)
+                                ->default(5)
+                                ->required(),
                             TextInput::make('order')
                                 ->label('Display Order')
                                 ->numeric()
-                                ->default(0),
-                            Toggle::make('verified')
-                                ->label('Verified Review')
+                                ->default(0)
+                                ->helperText('Lower numbers appear first'),
+                            Toggle::make('is_active')
+                                ->label('Active on Website')
+                                ->helperText('Toggle on to show on public site')
                                 ->default(true),
                         ]),
-                        Toggle::make('is_featured')
-                            ->label('Featured on Homepage')
-                            ->default(true),
                         FileUpload::make('avatar')
                             ->label('Client Photo / Avatar')
                             ->image()
+                            ->avatar()
                             ->directory('testimonials')
+                            ->imageEditor()
+                            ->maxSize(2048)
+                            ->columnSpanFull(),
+                        FileUpload::make('pdf')
+                            ->label('Client Testimonial / Case Study PDF (Optional)')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->directory('testimonials/docs')
+                            ->maxSize(10240)
+                            ->helperText('Upload an official client review document or signed case study PDF')
                             ->columnSpanFull(),
                     ]),
             ]);

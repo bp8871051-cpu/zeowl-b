@@ -26,6 +26,16 @@ class TestimonialResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return TestimonialForm::configure($schema);

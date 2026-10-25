@@ -47,6 +47,32 @@ Route::get('/blogs', [BlogController::class, 'index']);
 Route::get('/blogs/{slug}', [BlogController::class, 'show']);
 
 Route::get('/testimonials', [TestimonialController::class, 'index']);
+Route::get('/migrate', function () {
+    try {
+        if (!\Illuminate\Support\Facades\Schema::hasColumn('testimonials', 'pdf')) {
+            \Illuminate\Support\Facades\Schema::table('testimonials', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->string('pdf')->nullable()->after('avatar');
+            });
+        }
+        if (!\Illuminate\Support\Facades\Schema::hasColumn('testimonials', 'project_name')) {
+            \Illuminate\Support\Facades\Schema::table('testimonials', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->string('project_name')->nullable()->after('avatar');
+            });
+        }
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return response()->json([
+            'success' => true,
+            'has_pdf' => \Illuminate\Support\Facades\Schema::hasColumn('testimonials', 'pdf'),
+            'has_project_name' => \Illuminate\Support\Facades\Schema::hasColumn('testimonials', 'project_name'),
+            'artisan_output' => \Illuminate\Support\Facades\Artisan::output(),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+});
 Route::get('/settings', function () {
     return response()->json([
         'success' => true,
